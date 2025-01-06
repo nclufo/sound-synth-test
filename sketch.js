@@ -2,7 +2,6 @@ let wave;
 let button;
 let freqSlider;
 let ampSlider;
-let mousePos;
 let playing = false;
 
 function setup() {
@@ -14,7 +13,6 @@ function setup() {
 
   wave.setType('sine');
 
- //mousePos = map(mouseX(), 0, 400, 100, 1200)  // use mouse position as freq slider
   button = createButton('play/pause');
   button.mousePressed(toggle);
   
