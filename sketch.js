@@ -13,8 +13,6 @@ function setup() {
   ampSlider = createSlider(0, 1, 0.5, 0.1); // use slider to change amp
 
   wave.setType('sine');
-  wave.start();
-  wave.freq(440);
 
  //mousePos = map(mouseX(), 0, 400, 100, 1200)  // use mouse position as freq slider
   button = createButton('play/pause');
