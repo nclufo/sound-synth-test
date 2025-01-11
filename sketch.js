@@ -1,4 +1,5 @@
 let wave;
+let wave2;
 let button;
 let freqSlider;
 // let freqNoise;
@@ -8,23 +9,37 @@ let playing = false;
 let env;
 
 function setup() {
-  createCanvas(400, 40);
-
-
-  env = new p5.Envelope();
-  env.setADSR(0.5, 0.25, 0.5, 0.2);
-  env.setRange(0.8,0);
+  createCanvas(500, 600);
 
   wave = new p5.Oscillator();
-freqSlider = createSlider(80, 150, 100); // use slider to change freq
-
+  freqSlider = createSlider(80, 150, 100); // use slider to change freq
+  freqSlider.position(150, 80);
   ampSlider = createSlider(0, 0.8, 0.4, 0.1); // use slider to change amp
+  ampSlider.position(150, 20);
   panSlider = createSlider(-1, 1, 0, 0.1); // use slider to pan L and R
+  panSlider.position(320, 20);
+  
 
   wave.setType('sine');
 
   button = createButton('play/pause');
-  button.mousePressed(toggle);
+  button.position(30, 20);
+  button.mousePressed(togglePlay);
+
+  env = new p5.Env();
+  env.setADSR(0.05, 0.1, 0.5, 1);
+  env.setRange(1.2, 0);
+
+  wave2 = new p5.Oscillator();
+
+  wave2.setType('sine');
+  wave2.start();
+  wave2.freq(440);
+  wave2.amp(env);
+
+  button = createButton('a');
+  button.position(30, 80);
+  button.mousePressed(toggleA);
   
 }
 
@@ -43,13 +58,24 @@ function draw() {
     }
   }
 
+  fill(255);
+  text("volume",198, 50);
+  text("L", 325, 50);
+  text("R", 440, 50);
+  text('freq', 210, 110);
+
   wave.freq(freqSlider.value());
+
+  // freqNoise = noise();
+  // wave.freq(freqNoise);
+  // console.log(freqNoise);
+
   wave.amp(ampSlider.value());
   wave.pan(panSlider.value());
 }
 
 //// toggle sound with button
-function toggle(){
+function togglePlay(){
   if (!playing) {
     wave.start();
     wave.freq(440);
@@ -75,3 +101,14 @@ function toggle(){
 //   }
 // }
 
+function toggleA() {
+  env.play();
+
+  // if (!playing) {
+  //   wave.amp(0.5, 1);
+  //   playing = true;
+  // } else {
+  //   wave.amp(0, 1);
+  //   playing = false;
+  // }
+}
