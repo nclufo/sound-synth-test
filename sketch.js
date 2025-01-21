@@ -81,11 +81,11 @@ function setup() {
 function draw() {
   let t = frameCount * 0.002;
   noStroke();
-  for (let i = 0; i < 500; i += 15) {
-    for (let j = 0; j < 500; j += 15) {
+  for (let i = 0; i < 500; i += 5) {
+    for (let j = 0; j < 500; j += 5) {
       var n = noise(i * 0.005, j * 0.005 - t, t);
       fill(n*230, n*240, n * 250);
-      rect(i, j, 15);
+      rect(i, j, 5);
     }
 
 
