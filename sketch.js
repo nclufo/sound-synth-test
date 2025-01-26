@@ -10,28 +10,34 @@ let ampSlider;
 let panSlider;
 let playing = false;
 let env;
-let numBars;
-let bars = [];
+
+let numBars = 8; 
+let bars = []; 
 let xBar = [];
-let colour = ['#333637', '#394145', '#606C71', '#798F98', '#809AA6'];
+let clr = ['#333637', '#394145', '#606C71', '#798F98', '#809AA6','#8daab8', '#9bbccc', '#b3d5e6'];
+let notes = [32.703, 65.406, 130.813, 261.626, 523.251, 1046.502, 2093.005, 4186.0];
 let polySynth;
 
+let buttonPS;
+let polySynth2;
+
+
 function setup() {
-  createCanvas(500, 600);
+  createCanvas(600, 400);
   background(10);
 
   wave = new p5.Oscillator();
   freqSlider = createSlider(80, 150, 100); // use slider to change freq
-  freqSlider.position(50, 20);
+  freqSlider.position(60, 80);
   freqSlider.style('transform', 'rotate(270deg)');
   freqSlider.style('height', '225px');
   ampSlider = createSlider(0, 0.8, 0.4, 0.1); // use slider to change amp
-  ampSlider.position(-15, 20);
+  ampSlider.position(-15, 80);
   ampSlider.style('transform', 'rotate(270deg)');
   ampSlider.style('height', '225px');
   panSlider = createSlider(-1, 1, 0, 0.1); // use slider to pan L and R
-  panSlider.position(175, 20);
-  panSlider.style('width', '300px');
+  panSlider.position(25, 70);
+  panSlider.style('width', '130px');
   
 
   wave.setType('sine');
@@ -59,19 +65,27 @@ function setup() {
   // buttonB.position(85, 80);
   // buttonB.mousePressed(toggleNoteB);
 
+
+// PolySynth Bars
   for (let i = 0; i < numBars; i++) {
-    let widthBars = 500 / numBars;
-    let x = widthBars * i;
+    let w = 400 / numBars;
+    let x = w * i+200;
     xBar.push(x);
   }
-
   for (let i = 0; i < numBars; i++) {
-    bars.push(new Bar(i)); // create a new bar and push to array of bars
-    bars[i].display(); // call .display() function for that bar
+    bars.push(new Bar(i)); 
+    bars[i].display(); 
   }
-
   polySynth = new p5.PolySynth();
-  polySynth.setADSR(0.1, 0.4, 0.5, 0.05);
+  polySynth.setADSR(0.2, 0.4, 1, 2); 
+
+
+// PolySynth Button
+button = createButton("PolySynth");
+  button.position(50,350);
+  button.mousePressed(playPSynth);
+  polySynth2 = new p5.PolySynth();
+
 }
 
 
@@ -81,8 +95,8 @@ function setup() {
 function draw() {
   let t = frameCount * 0.002;
   noStroke();
-  for (let i = 0; i < 500; i += 5) {
-    for (let j = 0; j < 500; j += 5) {
+  for (let i = 0; i < 200; i += 5) {
+    for (let j = 0; j < 400; j += 5) {
       var n = noise(i * 0.005, j * 0.005 - t, t);
       fill(n*230, n*240, n * 250);
       rect(i, j, 5);
@@ -90,10 +104,10 @@ function draw() {
 
 
   fill(255);
-  text("vol",43, 220);
-  text("L", 175, 50);
-  text("R", 475, 50);
-  text('freq', 107, 220);
+  text("vol",43, 280);
+  text("L", 30, 110);
+  text("R", 145, 110);
+  text('freq', 117, 280);
 
   wave.freq(freqSlider.value());
 
@@ -106,6 +120,17 @@ function draw() {
 
 }}
 
+function playPSynth() {
+  userStartAudio();
+
+  let dur = 1.5;
+  let time = 0;
+  let vel = 0.1;
+
+  polySynth2.play('G2', vel, 0, dur);
+  polySynth2.play('C3', vel, time += 1/3, dur);
+  polySynth2.play('G3', vel, time += 1/3, dur);
+}
 
 function touchStarted() {
   userStartAudio();
